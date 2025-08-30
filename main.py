@@ -1,10 +1,14 @@
 from dotenv import load_dotenv
 import os
 import asyncio
+import certifi
 
 from semantic_kernel import Kernel
 from semantic_kernel.contents.chat_history import ChatHistory
 from semantic_kernel.connectors.ai.azure_ai_inference import AzureAIInferenceChatCompletion, AzureAIInferenceChatPromptExecutionSettings
+
+from azure.ai.inference.aio import ChatCompletionsClient
+from azure.core.credentials import AzureKeyCredential
 
 from colorama import Fore, Style
 
@@ -19,10 +23,18 @@ async def main():
 
     kernel = Kernel()
 
+
+# Build the Azure client with certifi's CA bundle
+    azure_client = ChatCompletionsClient(
+        endpoint=BASE_URL,
+        credential=AzureKeyCredential(API_KEY), # type: ignore
+        connection_verify=certifi.where(),          # <- key line (fixes SSL on mac)
+    )
+
+
     chat_completion = AzureAIInferenceChatCompletion(
         ai_model_id="gpt-4o-mini",
-        api_key= API_KEY,
-        endpoint= BASE_URL                                          
+        client=azure_client                                      
     )
 
 
