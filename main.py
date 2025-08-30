@@ -4,8 +4,9 @@ import asyncio
 
 from semantic_kernel import Kernel
 from semantic_kernel.contents.chat_history import ChatHistory
-
 from semantic_kernel.connectors.ai.azure_ai_inference import AzureAIInferenceChatCompletion, AzureAIInferenceChatPromptExecutionSettings
+
+from colorama import Fore, Style
 
 load_dotenv()
 
@@ -35,7 +36,7 @@ async def main():
     user_input = None
     while True:
         
-        user_input = input("User -> ")
+        user_input = input(f"{Fore.CYAN}User -> {Style.RESET_ALL}")
 
         if user_input == "quit":
             break
@@ -48,10 +49,10 @@ async def main():
             settings = settings,
         )
 
-        print("Assistant > " + str(result))
+        print(f"{Fore.MAGENTA}Assistant -> {Style.RESET_ALL}{str(result)}")
 
-        # Add the message from the agent to the chat history
-        history.add_message(result)
+
+        history.add_message(result) # type: ignore
 
 
 if __name__ == "__main__":
