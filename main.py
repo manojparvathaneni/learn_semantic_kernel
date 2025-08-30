@@ -28,8 +28,8 @@ async def main():
 
 
     kernel.add_service(chat_completion)
-
-    history = ChatHistory()
+    system_message= "You are a Python expert."
+    history = ChatHistory(system_message=system_message)
 
     settings = AzureAIInferenceChatPromptExecutionSettings(temperature=0)
 
@@ -50,8 +50,6 @@ async def main():
         )
 
         print(f"{Fore.MAGENTA}Assistant -> {Style.RESET_ALL}{str(result)}")
-
-
         history.add_message(result) # type: ignore
 
 
