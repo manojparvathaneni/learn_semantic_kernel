@@ -21,8 +21,6 @@ BASE_URL = os.getenv('BASE_URL')
 
 async def main():
 
-    kernel = Kernel()
-
 
 # Build the Azure client with certifi's CA bundle
     azure_client = ChatCompletionsClient(
@@ -37,9 +35,6 @@ async def main():
         client=azure_client                                      
     )
 
-
-
-    kernel.add_service(chat_completion)
     system_message= "You are a Python expert."
     history = ChatHistory(system_message=system_message)
 
@@ -57,7 +52,6 @@ async def main():
 
         result = await chat_completion.get_chat_message_content(
             chat_history = history,
-            kernel = kernel,
             settings = settings,
         )
 
